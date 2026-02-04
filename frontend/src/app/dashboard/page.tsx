@@ -79,7 +79,7 @@ export default function DashboardPage() {
                 <p className={`text-3xl font-bold ${
                   weightStats.weightChange < 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  {weightStats.weightChange > 0 ? '+' : ''}{weightStats.weightChange.toFixed(1)} kg
+                  {weightStats.weightChange > 0 ? '+' : ''}{Math.abs(weightStats.weightChange).toFixed(1)} kg
                 </p>
                 <p className="text-sm text-gray-500">
                   {weightStats.weightChange < 0 ? 'Lost' : weightStats.weightChange > 0 ? 'Gained' : 'No change'}
@@ -130,7 +130,7 @@ export default function DashboardPage() {
             <div className="space-y-4">
               {(['breakfast', 'lunch', 'dinner', 'snack'] as const).map((mealType) => {
                 const meals = mealSummary.meals[mealType];
-                const totalCal = meals.reduce((sum, m) => sum + m.calories, 0);
+                const totalCal = meals.reduce((sum, m) => sum + (m.calories * (m.quantity || 1)), 0);
                 return (
                   <div key={mealType} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                     <div>

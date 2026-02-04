@@ -63,7 +63,7 @@ export default function MealsPage() {
               <div className="space-y-6">
                 {(['breakfast', 'lunch', 'dinner', 'snack'] as const).map((mealType) => {
                   const typeMeals = meals.filter((m) => m.mealType === mealType);
-                  const typeCalories = typeMeals.reduce((sum, m) => sum + m.calories, 0);
+                  const typeCalories = typeMeals.reduce((sum, m) => sum + (m.calories * (m.quantity || 1)), 0);
 
                   return (
                     <div key={mealType}>

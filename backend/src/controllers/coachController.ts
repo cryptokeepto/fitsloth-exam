@@ -80,6 +80,25 @@ export const getPatientDetail = async (req: Request, res: Response): Promise<voi
       attributes: ['id', 'name', 'email', 'height', 'currentWeight', 'targetWeight', 'calPerDay', 'createdAt'],
     });
 
+    // Verify access
+    const coach = await Coach.findOne({ where: { userId: req.userId } });
+    if (!coach) {
+      res.status(403).json({ success: false, error: 'Access denied' });
+      return;
+    }
+
+    const assignment = await CoachPatient.findOne({
+      where: {
+        coachId: coach.id,
+        patientId,
+      },
+    });
+
+    if (!assignment) {
+      res.status(403).json({ success: false, error: 'Access denied' });
+      return;
+    }
+
     if (!patient) {
       res.status(404).json({
         success: false,
@@ -131,6 +150,25 @@ export const getPatientMeals = async (req: Request, res: Response): Promise<void
       ? new Date(startDate as string)
       : new Date(end.getTime() - 7 * 24 * 60 * 60 * 1000);
 
+    // Verify access
+    const coach = await Coach.findOne({ where: { userId: req.userId } });
+    if (!coach) {
+      res.status(403).json({ success: false, error: 'Access denied' });
+      return;
+    }
+
+    const assignment = await CoachPatient.findOne({
+      where: {
+        coachId: coach.id,
+        patientId,
+      },
+    });
+
+    if (!assignment) {
+      res.status(403).json({ success: false, error: 'Access denied' });
+      return;
+    }
+
     const meals = await MealLog.findAll({
       where: {
         userId: patientId,
@@ -176,6 +214,25 @@ export const getPatientMeals = async (req: Request, res: Response): Promise<void
 export const getPatientWeights = async (req: Request, res: Response): Promise<void> => {
   try {
     const patientId = (req as any).patientId;
+
+    // Verify access
+    const coach = await Coach.findOne({ where: { userId: req.userId } });
+    if (!coach) {
+      res.status(403).json({ success: false, error: 'Access denied' });
+      return;
+    }
+
+    const assignment = await CoachPatient.findOne({
+      where: {
+        coachId: coach.id,
+        patientId,
+      },
+    });
+
+    if (!assignment) {
+      res.status(403).json({ success: false, error: 'Access denied' });
+      return;
+    }
 
     const weights = await Weight.findAll({
       where: { userId: patientId },

@@ -46,7 +46,7 @@ export const getDailySummary = async (
     const foodItem = (meal as any).foodItem;
     const quantity = Number(meal.quantity);
 
-    totalCalories += meal.calories;
+    totalCalories += meal.calories * quantity;
     totalProtein += Number(foodItem.protein) * quantity;
     totalCarbs += Number(foodItem.carbs) * quantity;
     totalFat += Number(foodItem.fat) * quantity;
